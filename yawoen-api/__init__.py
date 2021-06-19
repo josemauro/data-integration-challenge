@@ -20,8 +20,8 @@ def load_csv(fname='q1_catalog.csv'):
 
         companies = []
         for row in csv_reader:
-            company_id = random.randint(0,100)
-            company_name = row[0]
+            company_id = random.randint(0, 100)
+            company_name = row[0].upper()
             zip_code = row[1]
             dict_user = {'id': company_id,
                          'company_name': company_name,
