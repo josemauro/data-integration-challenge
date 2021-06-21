@@ -10,6 +10,7 @@ def get_database():
 
     return client['yawoend-data']
 
+
 def load_csv(fname='q1_catalog.csv'):
     '''Load data from CSV file.'''
     db_name = get_database()
@@ -25,17 +26,15 @@ def load_csv(fname='q1_catalog.csv'):
         match_zip = re.compile('^[0-9]{6}$').match
 
         for row in csv_reader:
-            company_id = random.randint(0, 100)
             company_name = row[0].upper()
             zip_code = row[1]
 
             if not match_zip(zip_code):
                 print(f"Error: the company {company_name} was not saved in the"
-                       "data base because has an invalid zip code {zip_code}")
+                      "data base because has an invalid zip code {zip_code}")
                 continue
 
-            dict_user = {'id': company_id,
-                         'company_name': company_name,
+            dict_user = {'company_name': company_name,
                          'zip_code': zip_code}
             companies.append(dict_user)
 
@@ -75,13 +74,12 @@ def integrate_website_data(fname='q2_clientData.csv'):
             # Check if 'zip_code' is equal to the stored zip code
             if zip_code != company['zip_code']:
                 print(f"Error: the website for company {company_name} was"
-                       "not saved in the data base because the zip code "
+                      "not saved in the data base because the zip code "
                       f"'{zip_code}' from CSV file does not match with the "
                       "stored zip code.")
                 continue
 
-
-            collection.update_one({"_id": company['_id'] },
+            collection.update_one({"_id": company['_id']},
                                   {"$set": {"website": website}})
 
 
