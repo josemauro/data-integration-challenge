@@ -1,7 +1,41 @@
+import os
 import random
 import re
 from csv import reader
 from pymongo import MongoClient
+
+from flask import Flask
+
+
+def create_app(test_config=None):
+    # create and configure the app
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY='dev',
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+    )
+
+    if test_config is None:
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        # load the test config if passed in
+        app.config.from_mapping(test_config)
+
+    # ensure the instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    # Endpoint to load website data
+    @app.route('/websitetedata')
+    def api_load_website_data():
+        file_path = 'yawoen_api/q2_clientData.csv'
+        response = _load_website_data(file_path)
+        return response
+
+    return app
 
 
 def get_database():
@@ -15,7 +49,7 @@ def load_csv(fname='q1_catalog.csv'):
     '''Load data from CSV file.'''
     db_name = get_database()
 
-    with open(fname, 'r') as read_obj:
+    with open(f'yawoen_api/{fname}', 'r') as read_obj:
         csv_reader = reader(read_obj)
         collection = db_name['companies']
 
@@ -41,11 +75,15 @@ def load_csv(fname='q1_catalog.csv'):
         collection.insert_many(companies)
 
 
-def integrate_website_data(fname='q2_clientData.csv'):
+def _load_website_data(file_path):
     '''Load website data from file and integrate it to DB.'''
+    if not os.path.exists(file_path):
+        return (f"Error loading the website data from file '{file_path}'.\n"
+                "The file does not exist!")
+
     db_name = get_database()
 
-    with open(fname, 'r') as read_obj:
+    with open(file_path, 'r') as read_obj:
         csv_reader = reader(read_obj)
         collection = db_name['companies']
 
@@ -82,5 +120,5 @@ def integrate_website_data(fname='q2_clientData.csv'):
             collection.update_one({"_id": company['_id']},
                                   {"$set": {"website": website}})
 
-
+        return "Website data loaded!"
 
