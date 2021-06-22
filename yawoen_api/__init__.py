@@ -2,9 +2,9 @@ import os
 import random
 import re
 from csv import reader
-from pymongo import MongoClient
 
 from flask import Flask
+from pymongo import MongoClient
 
 
 def create_app(test_config=None):

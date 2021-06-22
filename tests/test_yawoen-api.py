@@ -1,6 +1,8 @@
 from unittest import TestCase, mock
-from unittest.mock import patch, mock_open
+from unittest.mock import mock_open, patch
+
 from yawoen_api import _load_csv, _load_website_data
+
 
 class TestInfluxBackend(TestCase):
     """Test methods in Influx Backend."""
