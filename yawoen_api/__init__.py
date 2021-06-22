@@ -1,3 +1,4 @@
+"""Module to provide the data integration API Yawoen."""
 import os
 import random
 import re
@@ -8,7 +9,7 @@ from pymongo import MongoClient
 
 
 def create_app(test_config=None):
-    # create and configure the app
+    """Create and configure the app."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -34,7 +35,6 @@ def create_app(test_config=None):
         file_path = 'yawoen_api/q1_catalog.csv'
         response = _load_csv(file_path)
         return response
-
 
     # Endpoint to load website data
     @app.route('/websitetedata')
@@ -101,8 +101,6 @@ def _load_website_data(file_path):
         csv_reader = reader(read_obj)
         collection = db_name['companies']
 
-        companies = []
-
         # Define the checker that returns 'None' if the zip code is not 6 digit
         # It was decided to use only numbers.
         match_zip = re.compile('^[0-9]{6}$').match
@@ -135,4 +133,3 @@ def _load_website_data(file_path):
                                   {"$set": {"website": website}})
 
         return "Website data loaded!"
-
