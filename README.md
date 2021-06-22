@@ -1,3 +1,45 @@
+# Documentation
+
+This documentation describes the how to test and use the API for integration data.
+
+## Using the Makefile
+
+- The Makefile has the following commands to help you configure and use the API :
+    - **deps:** installs the dependencies listed in the 'requiment.txt' file
+    - **setup:** set the enviroment variables to run Flask app.
+    - **test:** to execute the unit tests.
+    - **lint:** run the linter checks.
+    - **start:** run the application.
+
+
+## Loading CSV data and website data
+
+This implementation provides two endpoints to execute the tasks. The requests
+for the endpoints can be done using the address and port displayed with the 
+command 'make start'.
+
+**Load CSV data**
+-----------------
+Load the CSV file 'q1_catalog.csv' 
+* **URL**
+    ADDRESS:PORT/csvdata 
+
+**Load website data**
+---------------------
+Load the CSV file 'q2_clientData.csv' 
+* **URL**
+    ADDRESS:PORT/websitedata
+
+## Dependencies
+
+The python dependencies can be installed using 'make deps' command. Besides that
+it is necessary install the MongoDB as described [here](https://docs.mongodb.com/manual/installation/).
+
+## Verication Process
+
+The verification process can be made using MongoDB CLI.
+
+
 # Data integration challenge
 
 
