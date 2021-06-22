@@ -30,8 +30,8 @@ def create_app(test_config=None):
 
     # Endpoint to load csv data
     @app.route('/csvdata')
-    def api_load_website_data():
-        file_path = 'yawoen_api/q1_clientData.csv'
+    def api_load_csv():
+        file_path = 'yawoen-api/q1_catalog.csv'
         response = _load_csv(file_path)
         return response
 
@@ -39,7 +39,7 @@ def create_app(test_config=None):
     # Endpoint to load website data
     @app.route('/websitetedata')
     def api_load_website_data():
-        file_path = 'yawoen_api/q2_clientData.csv'
+        file_path = 'yawoen-api/q2_clientData.csv'
         response = _load_website_data(file_path)
         return response
 
@@ -50,7 +50,7 @@ def get_database():
     '''Get MongoDB client.'''
     client = MongoClient('localhost', 27017)
 
-    return client['yawoend-data']
+    return client['yawoen-data']
 
 
 def _load_csv(file_path):
@@ -85,6 +85,8 @@ def _load_csv(file_path):
             companies.append(dict_user)
 
         collection.insert_many(companies)
+
+        return 'Data loaded from CSV file.'
 
 
 def _load_website_data(file_path):
