@@ -28,6 +28,14 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    # Endpoint to load csv data
+    @app.route('/csvdata')
+    def api_load_website_data():
+        file_path = 'yawoen_api/q1_clientData.csv'
+        response = _load_csv(file_path)
+        return response
+
+
     # Endpoint to load website data
     @app.route('/websitetedata')
     def api_load_website_data():
@@ -45,11 +53,15 @@ def get_database():
     return client['yawoend-data']
 
 
-def load_csv(fname='q1_catalog.csv'):
+def _load_csv(file_path):
     '''Load data from CSV file.'''
+    if not os.path.exists(file_path):
+        return (f"Error loading data from file '{file_path}'.\n"
+                "The file does not exist!")
+
     db_name = get_database()
 
-    with open(f'yawoen_api/{fname}', 'r') as read_obj:
+    with open(file_path, 'r') as read_obj:
         csv_reader = reader(read_obj)
         collection = db_name['companies']
 
